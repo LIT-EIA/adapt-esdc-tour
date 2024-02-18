@@ -1,0 +1,17 @@
+<div class="guidedtour-inner component-inner">
+  {{> component this}}
+  <div class="guidedtour-widget tour-{{cid}} component-widget pin">
+    <div class="guidedtour-graphic"role="list">
+        <button class="start-tour">Start Tour</button>
+        <img src="{{_items.0._graphic.src}}" class="tour-disabled" {{#if _graphic.alt}}aria-label="{{_graphic.alt}}"{{else}}aria-hidden="true"{{/if}}/>
+        {{#if _graphic.attribution}}
+          <div class="graphic-attribution">{{{_graphic.attribution}}}</div>
+        {{/if}}
+        {{#each _items}}
+          <div class="guidedtour-graphic-pin-list-item" role="listitem">
+            <span class="base guidedtour-graphic-pin component-item-text-color tour-item-{{@index}}" data-index="{{@index}}" style="top:{{{_pin._top}}}%; left:{{{_pin._left}}}%;"></span>
+          </div>
+        {{/each}}
+    </div>
+  </div>
+</div>
