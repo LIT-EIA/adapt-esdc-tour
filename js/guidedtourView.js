@@ -51,16 +51,28 @@ define([
 
             this.previousStep = function (self, stepIndex) {
                 var step = this.steps[stepIndex];
-                this.$el.find(`.guidedtour-graphic img`).attr('src', step._graphic.src);
-                self.back();
+                this.loadImage(step._graphic.src).then(() =>
+                    self.back()
+                );
             };
 
             this.nextStep = function (self, stepIndex) {
                 this.steps[stepIndex].inView = true;
                 var step = this.steps[stepIndex];
-                this.$el.find(`.guidedtour-graphic img`).attr('src', step._graphic.src);
-                self.next();
+                this.loadImage(step._graphic.src).then(() =>
+                    self.next()
+                );
             };
+
+            this.loadImage = function (src) {
+                return new Promise((resolve, reject) => {
+                    const img = this.$el.find(`.guidedtour-graphic img`)[0]
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = src;
+                })
+            }
+
 
             var self = this;
 
