@@ -127,6 +127,11 @@ define([
             }
         },
 
+        remove: function(){
+            this.tour.complete();
+            Backbone.View.prototype.remove.call(this);
+        },
+
         onStartTour: function () {
             this.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
             this.steps[0].inView = true;
