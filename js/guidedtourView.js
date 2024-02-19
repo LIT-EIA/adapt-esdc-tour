@@ -25,14 +25,6 @@ define([
         },
 
         preRender: function () {
-            var _items = this.model.get('_items');
-            this.model._items = _items.map(step => {
-                if (step._pin._bubbledirection === 'center') {
-                    step._pin._left = 50;
-                    step._pin._top = 5;
-                }
-                return step;
-            });
             this.render();
         },
 
@@ -102,7 +94,7 @@ define([
                     id: `step-${index}-${self.componentID}`
                 }
 
-                if (step._pin._bubbledirection !== 'center') {
+                if (step._pin._bubbledirection !== 'none') {
                     stepObject.attachTo = {
                         element: `div[data-adapt-id="${self.componentID}"] .tour-item-${index}`,
                         on: step._pin._bubbledirection

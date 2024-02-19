@@ -140,7 +140,7 @@
                 "title": "Bubble Direction:",
                 "inputType": {
                   "type": "Select",
-                  "options": ["center", "left", "right", "top", "bottom"]
+                  "options": ["none", "left", "right", "top", "bottom"]
                 },
                 "validators": [],
                 "help": "Direction of the bubble"
