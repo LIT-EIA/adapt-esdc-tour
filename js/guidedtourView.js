@@ -25,12 +25,17 @@ define([
         },
 
         preRender: function () {
+            const globals = Adapt.course.get('_globals');
+            var guidedtour = globals._components._guidedtour;
+
+            this.model.set('guidedtour', guidedtour);
             this.render();
         },
 
         postRender: function () {
             this.componentID = this.$el.attr('data-adapt-id');
             this.steps = this.model.get('_items');
+            var guidedtour = this.model.get('guidedtour');
 
             this.tour = new Shepherd.Tour({
                 defaultStepOptions: {
@@ -94,13 +99,13 @@ define([
                                 return index === 0 ? self.tour.cancel() : self.previousStep(this, (index - 1));
                             },
                             classes: 'shepherd-button-secondary',
-                            text: index === 0 ? 'Close' : 'Back'
+                          text: index === 0 ? guidedtour.closeText : guidedtour.previousText
                         },
                         {
                             action() {
                                 return index === (self.steps.length - 1) ? self.tour.cancel() : self.nextStep(this, (index + 1));
                             },
-                            text: index === (self.steps.length - 1) ? 'Close' : 'Next'
+                          text: index === (self.steps.length - 1) ? guidedtour.closeText : guidedtour.nextText
                         }
                     ],
                     id: `step-${index}-${self.componentID}`

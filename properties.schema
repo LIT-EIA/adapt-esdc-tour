@@ -12,6 +12,38 @@
       "validators": [],
       "translatable": true
     },
+    "closeText": {
+      "type": "string",
+      "required": false,
+      "default": "Close",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "nextText": {
+      "type": "string",
+      "required": false,
+      "default": "Next",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "previousText": {
+      "type": "string",
+      "required": false,
+      "default": "Previous",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "startTourText": {
+      "type": "string",
+      "required": false,
+      "default": "Start Tour",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
     "popupPagination": {
       "type": "string",
       "required": true,

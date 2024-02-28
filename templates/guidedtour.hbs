@@ -2,7 +2,7 @@
   {{> component this}}
   <div class="guidedtour-widget tour-{{cid}} component-widget pin">
     <div class="guidedtour-graphic"role="list">
-        <button class="start-tour">Start Tour</button>
+        <button class="start-tour">{{ guidedtour.startTourText }}</button>
         <img src="{{_items.0._graphic.src}}" class="tour-disabled" {{#if _graphic.alt}}aria-label="{{_graphic.alt}}"{{else}}aria-hidden="true"{{/if}}/>
         {{#if _graphic.attribution}}
           <div class="graphic-attribution">{{{_graphic.attribution}}}</div>
