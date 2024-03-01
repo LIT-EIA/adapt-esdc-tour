@@ -1,5 +1,6 @@
 <div class="guidedtour-inner component-inner">
   {{> component this}}
+  {{#if active}}
   <div class="guidedtour-widget tour-{{cid}} component-widget pin">
     <div class="guidedtour-graphic"role="list">
         <button class="start-tour">{{ guidedtour.startTourText }}</button>
@@ -14,4 +15,5 @@
         {{/each}}
     </div>
   </div>
+  {{/if}}
 </div>
