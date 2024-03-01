@@ -78,6 +78,7 @@
       "type": "array",
       "required": true,
       "title": "Guided Tour Steps",
+      "validators": ["minimumItems2"],
       "items": {
         "type": "object",
         "required": true,
