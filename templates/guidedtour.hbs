@@ -2,6 +2,7 @@
   {{> component this}}
   {{#if active}}
   <div class="guidedtour-widget tour-{{cid}} component-widget pin">
+    <div class="loading-step sr-only" aria-hidden="true" role="dialog" tabindex="-1">loading</div>
     <div class="guidedtour-graphic"role="list">
         <button class="start-tour">{{ guidedtour.startTourText }}</button>
         <img src="{{_items.0._graphic.src}}" class="tour-disabled" {{#if _graphic.alt}}aria-label="{{_graphic.alt}}"{{else}}aria-hidden="true"{{/if}}/>

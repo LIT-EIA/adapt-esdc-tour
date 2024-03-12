@@ -61,17 +61,21 @@ define([
         }
 
         this.previousStep = function (self, stepIndex) {
+          this.$el.find('.loading-step').focus();
           var step = this.steps[stepIndex];
-          this.loadImage(step._graphic.src).then(() =>
-            self.back()
+          this.loadImage(step._graphic.src).then(() => {
+            self.back();
+          }
           );
         };
 
         this.nextStep = function (self, stepIndex) {
+          this.$el.find('.loading-step').focus();
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
-          this.loadImage(step._graphic.src).then(() =>
-            self.next()
+          this.loadImage(step._graphic.src).then(() => {
+            self.next();
+          }
           );
         };
 
@@ -96,8 +100,8 @@ define([
 
         this.steps.forEach(function (step, index) {
           var stepObject = {
-            title: step.title,
-            text: step.body,
+            title: `<div role="heading" aria-level="${self.model.get('_ariaLevel')}">${step.title}</div>`,
+            text: `<img src="${step._graphic.src}" class="sr-only" alt="${step._graphic.alt}"/>${step.body}`,
             buttons: [
               {
                 action() {

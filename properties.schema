@@ -7,7 +7,7 @@
     "ariaRegion": {
       "type": "string",
       "required": true,
-      "default": "Image with selectable areas. Select each button to show more information.",
+      "default": "Tour with steps image by image. Read each step and select Next to continue.",
       "inputType": "Text",
       "validators": [],
       "translatable": true
@@ -74,6 +74,15 @@
       "validators": [],
       "help": "Whether completion is based on the learner having viewed all the items - or just having viewed the component"
     },
+    "_ariaLevel": {
+      "type": "number",
+      "required": true,
+      "default": 4,
+      "title": "Title level",
+      "inputType": "Number",
+      "validators": ["required", "number"],
+      "help": "Aria level for title"
+    },
     "_items": {
       "type": "array",
       "required": true,
@@ -91,15 +100,6 @@
             "validators": [],
             "help": "Title displayed in the step bubble",
             "translatable": true
-          },
-          "_ariaLevel": {
-            "type": "number",
-            "required": true,
-            "default": 0,
-            "title": "Title level",
-            "inputType": "Number",
-            "validators": ["required", "number"],
-            "help": "Aria level for title"
           },
           "body": {
             "type": "string",
