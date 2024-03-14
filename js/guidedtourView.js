@@ -95,6 +95,7 @@ define([
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour').removeClass('display-none');
             self.verifyCompletion();
+            self.$el.find('.start-tour').focus();
           })
         });
 
