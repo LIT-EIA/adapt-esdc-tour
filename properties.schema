@@ -163,13 +163,22 @@
                 "type": "string",
                 "required": true,
                 "default": "right",
-                "title": "Bubble Direction:",
+                "title": "Bubble Direction",
                 "inputType": {
                   "type": "Select",
                   "options": ["none", "left", "right", "top", "bottom"]
                 },
                 "validators": [],
                 "help": "Direction of the bubble"
+              },
+              "_bordercolor": {
+                "type": "string",
+                "required": false,
+                "default": "transparent",
+                "title": "Bubble Border Color",
+                "inputType": "ColourPicker",
+                "validators": [],
+                "help": "Bubble Border Color"
               }
             }
           }

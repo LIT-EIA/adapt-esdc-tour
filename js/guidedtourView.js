@@ -103,6 +103,7 @@ define([
           var stepObject = {
             title: `<div role="heading" aria-level="${self.model.get('_ariaLevel')}">${step.title}</div>`,
             text: `<img src="${step._graphic.src}" class="sr-only" alt="${step._graphic.alt}"/>${step.body}`,
+            classes: step._pin._bordercolor ? 'border' : 'no-border',
             buttons: [
               {
                 action() {
@@ -123,7 +124,15 @@ define([
               element: `div[data-adapt-id="${self.componentID}"] .tour-item-${index}`,
               on: step._pin._bubbledirection !== 'none' ? step._pin._bubbledirection : 'bottom'
             },
-            arrow: step._pin._bubbledirection !== 'none'
+            arrow: step._pin._bubbledirection !== 'none',
+            borderColor: step._pin._bordercolor,
+            when: {
+              show: function() {
+                var dialog = this.el;
+                $(dialog).css(`border`, `2px solid ${this.options.borderColor}`);
+                $(dialog).css(`--shepherd-border-color`, this.options.borderColor);
+              }
+            }
           }
           self.tour.addStep(stepObject);
         })
