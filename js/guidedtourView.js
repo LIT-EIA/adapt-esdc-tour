@@ -103,7 +103,7 @@ define([
           var stepObject = {
             title: `<div role="heading" aria-level="${self.model.get('_ariaLevel')}">${step.title}</div>`,
             text: `<img src="${step._graphic.src}" class="sr-only" alt="${step._graphic.alt}"/>${step.body}`,
-            classes: step._pin._bordercolor ? 'border' : 'no-border',
+            classes: !step._pin._bordercolor || step._pin._bordercolor === 'rgba(0, 0, 0, 0)' ? 'no-border' : 'border',
             buttons: [
               {
                 action() {
@@ -128,9 +128,7 @@ define([
             borderColor: step._pin._bordercolor,
             when: {
               show: function() {
-                var dialog = this.el;
-                $(dialog).css(`border`, `2px solid ${this.options.borderColor}`);
-                $(dialog).css(`--shepherd-border-color`, this.options.borderColor);
+                $(this.el).css(`--shepherd-border-color`, this.options.borderColor);
               }
             }
           }
