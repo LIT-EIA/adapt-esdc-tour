@@ -58,7 +58,7 @@ define([
           if (Object.values(this.steps).every(step => step.inView === true)) {
             this.setCompletionStatus();
           }
-        }
+        };
 
         this.previousStep = function (self, stepIndex) {
           this.$el.find('.loading-step').focus();
@@ -100,8 +100,25 @@ define([
         });
 
         this.steps.forEach(function (step, index) {
+
+          var templateTitle = Handlebars.templates['stepTitle'];
+
+          var templateOptions = {
+            title: step.title,
+            itemNumber: index + 1,
+            totalItems: self.steps.length,
+            ariaLevel: self.model.get('_ariaLevel'),
+            hidePagination: self.model.get('_hidePagination')
+          };
+
+          var templatePagination = Adapt.course.get("_globals")._components._guidedtour.stepPagination || '{{itemNumber}} / {{totalItems}}';
+          templateOptions.paginationLabel = Handlebars.compile(templatePagination)(templateOptions);
+
+          var templatePaginationAria = Adapt.course.get("_globals")._components._guidedtour.stepPaginationAria || 'Step {{itemNumber}} of {{totalItems}}';
+          templateOptions.paginationAria = Handlebars.compile(templatePaginationAria)(templateOptions);
+
           var stepObject = {
-            title: `<div role="heading" aria-level="${self.model.get('_ariaLevel')}">${step.title}</div>`,
+            title: templateTitle(templateOptions),
             text: `<img src="${step._graphic.src}" class="sr-only" alt="${step._graphic.alt}"/>${step.body}`,
             classes: !step._pin._bordercolor || step._pin._bordercolor === 'rgba(0, 0, 0, 0)' ? 'no-border' : 'border',
             buttons: [
@@ -127,7 +144,7 @@ define([
             arrow: step._pin._bubbledirection !== 'none',
             borderColor: step._pin._bordercolor,
             when: {
-              show: function() {
+              show: function () {
                 $(this.el).css(`--shepherd-border-color`, this.options.borderColor);
               }
             }
