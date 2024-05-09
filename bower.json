@@ -12,5 +12,8 @@
     "adapt-plugin",
     "adapt-component"
   ],
+  "pluginDependencies": {
+    "adapt-contrib-narrative": "*"
+  },
   "license": "GPL-3.0"
 }

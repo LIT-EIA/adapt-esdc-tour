@@ -13,7 +13,53 @@ define([
     initialize: function () {
       ComponentView.prototype.initialize.call(this);
       this.checkIfResetOnRevisit();
+      this.listenTo(Adapt, 'device:changed', this.reRender);
     },
+    reRender: function() {
+      if (Adapt.device.screenSize !== 'large') {
+          this.replaceWithNarrative();
+      }
+  },
+
+  replaceWithNarrative: function() {
+      var NarrativeView = Adapt.getViewClass('narrative');
+
+      var model = this.prepareNarrativeModel();
+      var newNarrative = new NarrativeView({ model: model });
+      var $container = $(".component-container", $("." + this.model.get("_parentId")));
+
+      newNarrative.reRender();
+      newNarrative.setupNarrative();
+      $container.append(newNarrative.$el);
+      Adapt.trigger('device:resize');
+      _.defer(this.remove.bind(this));
+  },
+
+  prepareNarrativeModel: function() {
+      var model = this.model;
+      model.set({
+          '_component': 'narrative',
+          '_wasHotgraphic': true,
+          'originalBody': model.get('body'),
+          'originalInstruction': model.get('instruction')
+      });
+
+      // Check if active item exists, default to 0
+      var activeItem = model.getActiveItem();
+      if (!activeItem) {
+          model.getItem(0).toggleActive(true);
+      }
+
+      // Swap mobile body and instructions for desktop variants.
+      if (model.get('mobileBody')) {
+          model.set('body', model.get('mobileBody'));
+      }
+      if (model.get('mobileInstruction')) {
+          model.set('instruction', model.get('mobileInstruction'));
+      }
+
+      return model;
+  },
 
     checkIfResetOnRevisit: function () {
       var isResetOnRevisit = this.model.get('_isResetOnRevisit');
