@@ -35,6 +35,20 @@ define([
         const globals = Adapt.course.get('_globals');
         var guidedtour = globals._components._guidedtour;
         this.model.set('guidedtour', guidedtour);
+
+        var componentModel = this.model;
+        var blockModel = componentModel.get('_parent');
+        var articleModel = blockModel.get('_parent');
+
+        var models = [componentModel, blockModel, articleModel];
+        var titleLevel = 1;
+
+        models.forEach(function(model){
+          if(model.get('displayTitle').length >= 1){
+            titleLevel++;
+          }
+        })
+        this.model.set('_ariaLevel', (titleLevel + 1))
       }
       this.render();
     },
