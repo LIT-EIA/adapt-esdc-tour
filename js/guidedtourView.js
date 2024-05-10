@@ -15,13 +15,13 @@ define([
       this.checkIfResetOnRevisit();
       this.listenTo(Adapt, 'device:changed', this.reRender);
     },
-    reRender: function() {
+    reRender: function () {
       if (Adapt.device.screenSize !== 'large') {
-          this.replaceWithNarrative();
+        this.replaceWithNarrative();
       }
-  },
+    },
 
-  replaceWithNarrative: function() {
+    replaceWithNarrative: function () {
       var NarrativeView = Adapt.getViewClass('narrative');
 
       var model = this.prepareNarrativeModel();
@@ -30,36 +30,36 @@ define([
 
       newNarrative.reRender();
       newNarrative.setupNarrative();
-      $container.append(newNarrative.$el);
-      Adapt.trigger('device:resize');
+      $container.html(newNarrative.$el);
+      //Adapt.trigger('device:resize');
       _.defer(this.remove.bind(this));
-  },
+    },
 
-  prepareNarrativeModel: function() {
+    prepareNarrativeModel: function () {
       var model = this.model;
       model.set({
-          '_component': 'narrative',
-          '_wasHotgraphic': true,
-          'originalBody': model.get('body'),
-          'originalInstruction': model.get('instruction')
+        '_component': 'narrative',
+        '_wasGuidedtour': true,
+        'originalBody': model.get('body'),
+        'originalInstruction': model.get('instruction')
       });
 
       // Check if active item exists, default to 0
       var activeItem = model.getActiveItem();
       if (!activeItem) {
-          model.getItem(0).toggleActive(true);
+        model.getItem(0).toggleActive(true);
       }
 
       // Swap mobile body and instructions for desktop variants.
       if (model.get('mobileBody')) {
-          model.set('body', model.get('mobileBody'));
+        model.set('body', model.get('mobileBody'));
       }
       if (model.get('mobileInstruction')) {
-          model.set('instruction', model.get('mobileInstruction'));
+        model.set('instruction', model.get('mobileInstruction'));
       }
 
       return model;
-  },
+    },
 
     checkIfResetOnRevisit: function () {
       var isResetOnRevisit = this.model.get('_isResetOnRevisit');
@@ -89,14 +89,20 @@ define([
         var models = [componentModel, blockModel, articleModel];
         var titleLevel = 1;
 
-        models.forEach(function(model){
-          if(model.get('displayTitle').length >= 1){
+        models.forEach(function (model) {
+          if (model.get('displayTitle').length >= 1) {
             titleLevel++;
           }
         })
         this.model.set('_ariaLevel', (titleLevel + 1))
       }
-      this.render();
+
+      if (Adapt.device.screenSize === 'large') {
+        this.render();
+      } else {
+        this.reRender();
+      }
+
     },
 
     postRender: function () {
@@ -219,7 +225,7 @@ define([
     },
 
     remove: function () {
-      if (this.model.get('active')) {
+      if (this.model.get('active') && this.tour) {
         this.tour.complete();
       }
       Backbone.View.prototype.remove.call(this);
