@@ -92,6 +92,24 @@
       "validators": [],
       "help": "Whether completion is based on the learner having viewed all the items - or just having viewed the component"
     },
+    "mobileBody": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "TextArea",
+      "validators": [],
+      "help": "This body text is displayed on mobile devices when this component turns into a Narrative",
+      "translatable": true
+    },
+    "mobileInstruction": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true,
+      "help": "This instruction text is displayed on mobile devices when this component turns into a Narrative"
+    },
     "_hidePagination": {
       "type": "boolean",
       "required": true,
