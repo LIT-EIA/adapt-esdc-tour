@@ -177,6 +177,15 @@
             "title": "Step Position",
             "secondaryLabel": "Tip: You can quickly find the pin position with the <a target=\"_blank\" href=\"https://lit-eia.github.io/en/adapt/pin-finder/\">Pin Position Finder Tool</a>",
             "properties": {
+              "_pinfinder": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "GuidedTourPinFinder",
+                "validators": [],
+                "help": "Pin finder",
+                "title": "Pin finder"
+              },
               "_left": {
                 "type": "number",
                 "required": true,
