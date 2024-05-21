@@ -2,8 +2,10 @@
 
     .guidedtour-graphic {
         position: relative;
-        display: inline-block;
         max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .guidedtour-graphic-pin {
@@ -281,11 +283,10 @@
 
 .start-tour {
     position: absolute;
-    max-width: 30%;
+    width: auto;
+    min-width: 25%;
     height: 15%;
     z-index: 1;
-    left: 37.5%;
-    top: 41.5%;
 }
 
 .sr-only {
@@ -304,7 +305,7 @@
 }
 
 .shepherd-arrow:before {
-    transform: rotate(45deg) scale(1.25)!important;
+    transform: rotate(45deg) scale(1.25) !important;
 }
 
 .border {
