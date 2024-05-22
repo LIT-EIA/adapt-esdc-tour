@@ -168,6 +168,15 @@
                 "validators": [],
                 "help": "Alternative text for the image displayed behind the step",
                 "translatable": true
+              },
+              "_forceFullWidth": {
+                "type": "boolean",
+                "required": false,
+                "default": false,
+                "inputType": "Checkbox",
+                "validators": [],
+                "title": "Force full width",
+                "help": "Force full width"
               }
             }
           },
