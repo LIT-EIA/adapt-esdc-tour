@@ -13,6 +13,7 @@ define([
     initialize: function () {
       ComponentView.prototype.initialize.call(this);
       this.checkIfResetOnRevisit();
+      this.scrollToImageCenterBound = this.scrollToImageCenter.bind(this);
       this.listenTo(Adapt, 'device:changed', this.reRender);
     },
     reRender: function () {
@@ -22,6 +23,7 @@ define([
     },
 
     replaceWithNarrative: function () {
+      this.stopListening(Adapt, 'device:resize', this.scrollToImageCenterBound);
       var NarrativeView = Adapt.getViewClass('narrative');
 
       var model = this.prepareNarrativeModel();
@@ -147,12 +149,13 @@ define([
 
         this.loadImage = function (step) {
           return new Promise((resolve, reject) => {
+            var self = this;
             const wrapper = this.$el.find('.guidedtour-graphic');
             const img = this.$el.find(`.guidedtour-graphic img`)[0];
-            console.log(step._graphic._forceFullWidth);
             var fullWidth = step._graphic._forceFullWidth ? true : false;
             img.onload = () => {
               wrapper.toggleClass('full-width', fullWidth);
+              self.scrollToImageCenterBound();
               resolve(img);
             }
             img.onerror = reject;
@@ -163,12 +166,17 @@ define([
         var self = this;
 
         this.tour.on('cancel', function (e) {
+          self.stopListening(Adapt, 'device:resize', self.scrollToImageCenterBound);
           self.loadImage(self.steps[0]).then(() => {
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour').removeClass('display-none');
             self.verifyCompletion();
             self.$el.find('.start-tour').focus();
           })
+        });
+
+        this.tour.on('start', function (e) {
+          self.listenTo(Adapt, 'device:resize', self.scrollToImageCenterBound);
         });
 
         this.steps.forEach(function (step, index) {
@@ -238,7 +246,7 @@ define([
     },
 
     onStartTour: function () {
-      this.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
+      this.scrollToImageCenterBound();
       this.steps[0].inView = true;
       var self = this;
       setTimeout(function () {
@@ -246,7 +254,18 @@ define([
         self.$el.find('.guidedtour-graphic img').removeClass('tour-disabled');
         self.tour.start();
       }, 300)
-    }
+    },
+
+    scrollToImageCenter: function () {
+      var image = this.$el.find(`.guidedtour-graphic img`);
+      var imagePosition = image.offset().top;
+      var viewHeight = $(window).height() + $('.navigation').height();
+      var imageHeight = image.height();
+      var imageMiddle = imagePosition + (imageHeight / 2);
+      var viewMiddle = (viewHeight / 2);
+      var scrollToPosition = (imageMiddle - viewMiddle);
+      window.scrollTo({top: scrollToPosition, behavior: 'smooth'});
+    },
 
   });
 
