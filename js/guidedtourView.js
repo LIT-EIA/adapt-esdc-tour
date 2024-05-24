@@ -108,6 +108,7 @@ define([
     },
 
     postRender: function () {
+      var self = this;
       if (this.model.get('active')) {
         var guidedtour = this.model.get('guidedtour');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -128,21 +129,21 @@ define([
           }
         };
 
-        this.previousStep = function (self, stepIndex) {
+        this.previousStep = function (tour, stepIndex) {
           this.$el.find('.loading-step').focus({ preventScroll: true });
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
-            self.back();
+            tour.back();
           }
           );
         };
 
-        this.nextStep = function (self, stepIndex) {
+        this.nextStep = function (tour, stepIndex) {
           this.$el.find('.loading-step').focus({ preventScroll: true });
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
-            self.next();
+            tour.next();
           }
           );
         };
@@ -155,7 +156,6 @@ define([
             var fullWidth = step._graphic._forceFullWidth ? true : false;
             img.onload = () => {
               wrapper.toggleClass('full-width', fullWidth);
-              self.scrollToImageCenterBound();
               resolve(img);
             }
             img.onerror = reject;
@@ -163,11 +163,11 @@ define([
           })
         };
 
-        var self = this;
 
         this.tour.on('cancel', function (e) {
           self.stopListening(Adapt, 'device:resize', self.scrollToImageCenterBound);
           self.loadImage(self.steps[0]).then(() => {
+            self.scrollToImageCenterBound();
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour').removeClass('display-none');
             self.verifyCompletion();
@@ -225,7 +225,10 @@ define([
             borderColor: step._pin._bordercolor,
             when: {
               show: function () {
-                $(this.el).css(`--shepherd-border-color`, this.options.borderColor);
+                var dialog = $(this.el);
+                dialog.addClass(`step-${index}-${self.componentID}`);
+                dialog.css(`--shepherd-border-color`, this.options.borderColor);
+                self.scrollToImageCenterBound()
               }
             }
           }
@@ -246,7 +249,6 @@ define([
     },
 
     onStartTour: function () {
-      this.scrollToImageCenterBound();
       this.steps[0].inView = true;
       var self = this;
       setTimeout(function () {
@@ -257,14 +259,53 @@ define([
     },
 
     scrollToImageCenter: function () {
-      var image = this.$el.find(`.guidedtour-graphic img`);
-      var imagePosition = image.offset().top;
-      var viewHeight = $(window).height() + $('.navigation').height();
-      var imageHeight = image.height();
-      var imageMiddle = imagePosition + (imageHeight / 2);
-      var viewMiddle = (viewHeight / 2);
-      var scrollToPosition = (imageMiddle - viewMiddle);
-      window.scrollTo({top: scrollToPosition, behavior: 'smooth'});
+      var self = this;
+      var tour = self.tour;
+      var currentStep = tour.getCurrentStep();
+      var stepId = currentStep.id;
+
+      _.delay(() => {
+        var stepElem = $(`.shepherd-element.${stepId}`);
+        var img = self.$el.find('.guidedtour-graphic img');
+        var navHeight = $('.navigation').height();
+        var win = $(window);
+        var winScrollTop = win.scrollTop();
+        var winHeight = win.height();
+        var viewHeight = winHeight + navHeight;
+        var imgOffset = img.offset();
+        var imgHeight = img.outerHeight(true);
+        var imgTop = imgOffset.top;
+        var imgBottom = imgTop + imgHeight;
+        var centerImg = imgTop + (imgHeight / 2) - (viewHeight / 2);
+        var imgInView = imgTop > winScrollTop + navHeight && imgBottom < winScrollTop + winHeight;
+
+        if (stepElem.length > 0) {
+          var stepOffset = stepElem.offset();
+          var stepHeight = stepElem.outerHeight(true);
+          var stepTop = stepOffset.top;
+          var stepBottom = stepTop + stepHeight;
+          var imgNotCentered = centerImg !== winScrollTop;
+          var imgLowerThanView = imgBottom > winScrollTop + winHeight;
+          var imgHigherThanView = imgTop < winScrollTop + navHeight;
+          var stepHigherThanImg = stepTop < imgTop;
+          var stepLowerThanImg = stepBottom > imgBottom;
+          var viewLowerThanStep = winScrollTop + navHeight > stepTop;
+          var viewHigherThanStep = winScrollTop + winHeight < stepBottom;
+          var stepInsideImg = imgTop < stepTop && imgBottom > stepBottom;
+
+          if (stepLowerThanImg && (viewHigherThanStep || imgHigherThanView)) {
+            window.scrollTo({ top: stepBottom - winHeight, behavior: 'smooth' });
+          } else if (stepHigherThanImg && (viewLowerThanStep || imgLowerThanView)) {
+            window.scrollTo({ top: stepTop - navHeight, behavior: 'smooth' });
+          } else if (stepInsideImg && imgNotCentered && !imgInView) {
+            window.scrollTo({ top: centerImg, behavior: 'smooth' });
+          }
+        } else {
+          if (!imgInView) {
+            window.scrollTo({ top: centerImg, behavior: 'smooth' });
+          }
+        }
+      }, 50);
     },
 
   });
