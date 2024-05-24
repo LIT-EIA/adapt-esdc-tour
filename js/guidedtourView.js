@@ -129,7 +129,7 @@ define([
         };
 
         this.previousStep = function (self, stepIndex) {
-          this.$el.find('.loading-step').focus();
+          this.$el.find('.loading-step').focus({ preventScroll: true });
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
             self.back();
@@ -138,7 +138,7 @@ define([
         };
 
         this.nextStep = function (self, stepIndex) {
-          this.$el.find('.loading-step').focus();
+          this.$el.find('.loading-step').focus({ preventScroll: true });
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
