@@ -129,7 +129,7 @@ define([
         this.previousStep = function (self, stepIndex) {
           this.$el.find('.loading-step').focus();
           var step = this.steps[stepIndex];
-          this.loadImage(step._graphic.src).then(() => {
+          this.loadImage(step).then(() => {
             self.back();
           }
           );
@@ -139,25 +139,31 @@ define([
           this.$el.find('.loading-step').focus();
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
-          this.loadImage(step._graphic.src).then(() => {
+          this.loadImage(step).then(() => {
             self.next();
           }
           );
         };
 
-        this.loadImage = function (src) {
+        this.loadImage = function (step) {
           return new Promise((resolve, reject) => {
-            const img = this.$el.find(`.guidedtour-graphic img`)[0]
-            img.onload = () => resolve(img);
+            const wrapper = this.$el.find('.guidedtour-graphic');
+            const img = this.$el.find(`.guidedtour-graphic img`)[0];
+            console.log(step._graphic._forceFullWidth);
+            var fullWidth = step._graphic._forceFullWidth ? true : false;
+            img.onload = () => {
+              wrapper.toggleClass('full-width', fullWidth);
+              resolve(img);
+            }
             img.onerror = reject;
-            img.src = src;
+            img.src = step._graphic.src;
           })
         };
 
         var self = this;
 
         this.tour.on('cancel', function (e) {
-          self.loadImage(self.steps[0]._graphic.src).then(() => {
+          self.loadImage(self.steps[0]).then(() => {
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour').removeClass('display-none');
             self.verifyCompletion();
