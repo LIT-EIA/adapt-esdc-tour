@@ -292,10 +292,11 @@ define([
           var viewLowerThanStep = winScrollTop + navHeight > stepTop;
           var viewHigherThanStep = winScrollTop + winHeight < stepBottom;
           var stepInsideImg = imgTop < stepTop && imgBottom > stepBottom;
+          var imageBiggerThanView = imgHeight > viewHeight;
 
-          if (stepLowerThanImg && (viewHigherThanStep || imgHigherThanView)) {
+          if ((stepLowerThanImg && (viewHigherThanStep || imgHigherThanView)) || (imageBiggerThanView && viewHigherThanStep)) {
             window.scrollTo({ top: stepBottom - winHeight, behavior: 'smooth' });
-          } else if (stepHigherThanImg && (viewLowerThanStep || imgLowerThanView)) {
+          } else if ((stepHigherThanImg && (viewLowerThanStep || imgLowerThanView)) || (imageBiggerThanView && viewLowerThanStep)) {
             window.scrollTo({ top: stepTop - navHeight, behavior: 'smooth' });
           } else if (stepInsideImg && imgNotCentered && !imgInView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
