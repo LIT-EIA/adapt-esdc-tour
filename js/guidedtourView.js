@@ -13,8 +13,9 @@ define([
     initialize: function () {
       ComponentView.prototype.initialize.call(this);
       this.checkIfResetOnRevisit();
-      this.scrollToImageCenterBound = this.scrollToImageCenter.bind(this);
+      this.scrollToPositionBound = this.scrollToPosition.bind(this);
       this.listenTo(Adapt, 'device:changed', this.reRender);
+      this.listenTo(Adapt, 'device:resize', this.setStartButton);
     },
     reRender: function () {
       if (Adapt.device.screenSize !== 'large') {
@@ -23,7 +24,7 @@ define([
     },
 
     replaceWithNarrative: function () {
-      this.stopListening(Adapt, 'device:resize', this.scrollToImageCenterBound);
+      this.stopListening(Adapt, 'device:resize', this.scrollToPositionBound);
       var NarrativeView = Adapt.getViewClass('narrative');
 
       var model = this.prepareNarrativeModel();
@@ -109,6 +110,7 @@ define([
 
     postRender: function () {
       var self = this;
+      self.setStartButton();
       if (this.model.get('active')) {
         var guidedtour = this.model.get('guidedtour');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -165,18 +167,18 @@ define([
 
 
         this.tour.on('cancel', function (e) {
-          self.stopListening(Adapt, 'device:resize', self.scrollToImageCenterBound);
+          self.stopListening(Adapt, 'device:resize', self.scrollToPositionBound);
           self.loadImage(self.steps[0]).then(() => {
-            self.scrollToImageCenterBound();
+            self.scrollToPositionBound();
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour').removeClass('display-none');
             self.verifyCompletion();
-            self.$el.find('.start-tour').focus();
+            self.$el.find('.start-tour.active-button').focus({ preventScroll: true });
           })
         });
 
         this.tour.on('start', function (e) {
-          self.listenTo(Adapt, 'device:resize', self.scrollToImageCenterBound);
+          self.listenTo(Adapt, 'device:resize', self.scrollToPositionBound);
         });
 
         this.steps.forEach(function (step, index) {
@@ -228,7 +230,7 @@ define([
                 var dialog = $(this.el);
                 dialog.addClass(`step-${index}-${self.componentID}`);
                 dialog.css(`--shepherd-border-color`, this.options.borderColor);
-                self.scrollToImageCenterBound()
+                self.scrollToPositionBound()
               }
             }
           }
@@ -248,17 +250,35 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
 
+    setStartButton: function () {
+      var img = this.$el.find('.guidedtour-graphic img');
+      var navHeight = $('.navigation').height();
+      var win = $(window);
+      var winHeight = win.height();
+      var viewHeight = winHeight + navHeight;
+      var imgHeight = img.outerHeight(true);
+      var imageBiggerThanView = imgHeight > (viewHeight - navHeight);
+      console.log('imageBiggerThanView', imageBiggerThanView);
+      if (imageBiggerThanView) {
+        this.$el.find('.guidedtour-widget .top-button').toggleClass('active-button', true);
+        this.$el.find('.guidedtour-graphic .over-button').toggleClass('active-button', false);
+      } else {
+        this.$el.find('.guidedtour-graphic .over-button').toggleClass('active-button', true);
+        this.$el.find('.guidedtour-widget .top-button').toggleClass('active-button', false);
+      }
+    },
+
     onStartTour: function () {
       this.steps[0].inView = true;
       var self = this;
-      setTimeout(function () {
+      _.delay(function () {
         self.$el.find('.start-tour').addClass('display-none');
         self.$el.find('.guidedtour-graphic img').removeClass('tour-disabled');
         self.tour.start();
       }, 300)
     },
 
-    scrollToImageCenter: function () {
+    scrollToPosition: function () {
       var self = this;
       var tour = self.tour;
       var currentStep = tour.getCurrentStep();
@@ -278,6 +298,13 @@ define([
         var imgBottom = imgTop + imgHeight;
         var centerImg = imgTop + (imgHeight / 2) - (viewHeight / 2);
         var imgInView = imgTop > winScrollTop + navHeight && imgBottom < winScrollTop + winHeight;
+        var imageBiggerThanView = imgHeight > (viewHeight - navHeight);
+        var instructions = self.$el.find('.guidedtour-instruction-inner');
+        var instructionsOffset = instructions.offset();
+        var instructionsTop = instructionsOffset.top - navHeight;
+        var button = self.$el.find('.top-button');
+        var buttonOffset = button.offset();
+        var buttonTop = buttonOffset.top;
 
         if (stepElem.length > 0) {
           var stepOffset = stepElem.offset();
@@ -292,18 +319,42 @@ define([
           var viewLowerThanStep = winScrollTop + navHeight > stepTop;
           var viewHigherThanStep = winScrollTop + winHeight < stepBottom;
           var stepInsideImg = imgTop < stepTop && imgBottom > stepBottom;
-          var imageBiggerThanView = imgHeight > viewHeight;
+          var centerStep = stepTop + (stepHeight / 2) - navHeight;
+          var viewOnCenterStep = centerStep - (viewHeight / 2) + navHeight;
+          var nearBottom = (imgBottom - centerStep) < (viewHeight / 2) + navHeight;
+          var nearTop = (centerStep - imgTop) < (viewHeight / 2) + navHeight;
+          var viewOnImageBottom = imgBottom - (viewHeight - navHeight);
+          var viewOnImageTop = imgTop - navHeight;
 
-          if ((stepLowerThanImg && (viewHigherThanStep || imgHigherThanView)) || (imageBiggerThanView && viewHigherThanStep)) {
+          if (stepLowerThanImg && ((viewHigherThanStep || imgHigherThanView) || (imageBiggerThanView && viewHigherThanStep))) {
             window.scrollTo({ top: stepBottom - winHeight, behavior: 'smooth' });
-          } else if ((stepHigherThanImg && (viewLowerThanStep || imgLowerThanView)) || (imageBiggerThanView && viewLowerThanStep)) {
+            console.log('bottom of step!')
+          } else if (stepHigherThanImg && ((viewLowerThanStep || imgLowerThanView) || (imageBiggerThanView && viewLowerThanStep))) {
             window.scrollTo({ top: stepTop - navHeight, behavior: 'smooth' });
+            console.log('top of step!')
+          } else if (stepInsideImg && imageBiggerThanView) {
+            if (nearBottom) {
+              console.log('bottom of image!');
+              window.scrollTo({ top: viewOnImageBottom, behavior: 'smooth' });
+            } else if (nearTop) {
+              console.log('top of image!');
+              window.scrollTo({ top: viewOnImageTop, behavior: 'smooth' });
+            } else {
+              console.log('center of step!')
+              window.scrollTo({ top: viewOnCenterStep, behavior: 'smooth' });
+            }
           } else if (stepInsideImg && imgNotCentered && !imgInView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
+            console.log('middle of image!')
           }
         } else {
-          if (!imgInView) {
+          console.log(imageBiggerThanView);
+          if (!imgInView && !imageBiggerThanView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
+            console.log('middle of image!')
+          } else if (imageBiggerThanView) {
+            window.scrollTo({ top: instructionsTop, behavior: 'smooth' });
+            console.log('instructions!')
           }
         }
       }, 50);

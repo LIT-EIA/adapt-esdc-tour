@@ -6,8 +6,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+
         &.full-width {
             width: 100%;
+
             img {
                 width: 100%;
             }
@@ -285,15 +287,26 @@
 
 .tour-disabled {
     opacity: 0.3;
+    filter: blur(4px);
 }
 
-.start-tour {
-    position: absolute;
-    width: auto;
-    min-width: 25%;
-    height: 15%;
-    z-index: 1;
+.guidedtour-inner {
+    .start-tour {
+        width: 100%;
+        display: none;
+
+    }
+    .guidedtour-graphic .start-tour {
+        position: absolute;
+        width: auto;
+        min-width: 25%;
+        z-index: 1;
+    }
+    .active-button {
+        display: inline-block;
+    }
 }
+
 
 .sr-only {
     position: absolute;
