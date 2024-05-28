@@ -1,8 +1,10 @@
 # adapt-esdc-tour
 
+**Guided Tour** is a *presentation component* for Adapt.
+
 ![gif animation displaying guided tour](https://raw.githubusercontent.com/wiki/LIT-EIA/adapt-esdc-tour/adapt-esdc-tour-animated-demo.gif)
 
-The Adapt Tour Component is a versatile solution for guiding users through a series of steps or features on a form, system, application, or website. Similar to hotgraphic, it's a useful tool for onboarding new users, providing feature tutorials, and giving guided tours of a system's functionality. This plugin allows developers to create interactive step-by-step guides that highlight specific elements on an image based on their position and include instructions or information for each step. It's particularly useful for improving user engagement and reducing confusion for new users navigating a complex interface. The component is powered by [ShepherdJS](https://github.com/shepherd-pro/shepherd), ensuring a smooth and interactive user experience.
+The Adapt Guided Tour Component is a versatile solution for guiding users through a series of steps or features on a form, system, application, or website. Similar to hotgraphic, it's a useful tool for onboarding new users, providing feature tutorials, and giving guided tours of a system's functionality. This plugin allows developers to create interactive step-by-step guides that highlight specific elements on an image based on their position and include instructions or information for each step. It's particularly useful for improving user engagement and reducing confusion for new users navigating a complex interface. The component is powered by [ShepherdJS](https://github.com/shepherd-pro/shepherd), ensuring a smooth and interactive user experience.
 
 ## Features
 
@@ -14,7 +16,7 @@ The Adapt Tour Component is a versatile solution for guiding users through a ser
 
 ## Installation
 
-To install the Adapt Tour Component in the Adapt framework, run the following command from the command line:
+To install the Adapt Guided Tour Component in the Adapt framework, run the following command from the command line:
 
 ```sh
 adapt install adapt-esdc-tour
@@ -57,3 +59,7 @@ Each entry in the array represents a step in the guided tour and should contain 
 - **_graphic (object)**: Path to the background image displayed behind the step.
 - **_pinfinder (string)**: Only used with special Authoring Tool plugin.
 - **_pin (object)**: Properties for the pin, including position and direction.
+  - _left: Left position of the pin.
+  - _top: Top position of the pin.
+  - _bubbledirection: Direction of the bubble.
+  - _bordercolor: Bubble border color.
