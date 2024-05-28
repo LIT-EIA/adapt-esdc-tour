@@ -31,7 +31,7 @@ define([
 
 	function setShepherdJS() {
 		Adapt.wait ? Adapt.wait.begin() : Adapt.trigger("plugin:beginWait");
-		var src = "./assets/shepherd.js";
+		var src = "./assets/shepherd/shepherd.js";
 		loadScript({ src: src }, function () {
 			Adapt.wait ? Adapt.wait.end() : Adapt.trigger("plugin:endWait");
 		});
