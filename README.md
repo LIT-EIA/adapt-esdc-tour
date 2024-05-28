@@ -12,8 +12,6 @@ The Adapt Tour Component is a versatile solution for guiding users through a ser
 
 ## Installation
 
-### Adapt Framework
-
 To install the Adapt Tour Component in the Adapt framework, run the following command from the command line:
 
 ```sh
