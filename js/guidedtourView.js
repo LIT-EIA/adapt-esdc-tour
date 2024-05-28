@@ -110,7 +110,9 @@ define([
 
     postRender: function () {
       var self = this;
-      self.setStartButton();
+      this.$el.find(`.guidedtour-graphic img`).on('load', function () {
+        self.setStartButton();
+      });
       if (this.model.get('active')) {
         var guidedtour = this.model.get('guidedtour');
         this.componentID = this.$el.attr('data-adapt-id');
