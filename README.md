@@ -63,3 +63,5 @@ Each entry in the array represents a step in the guided tour and should contain 
   - _top: Top position of the pin.
   - _bubbledirection: Direction of the bubble.
   - _bordercolor: Bubble border color.
+----------------------------
+Requires framework >=4.4.1
