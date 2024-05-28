@@ -1,6 +1,8 @@
 # adapt-esdc-tour
 
-The Adapt Tour Component is a versatile solution for guiding users through a series of steps or features on a form, system, application, or website. It's a useful tool for onboarding new users, providing feature tutorials, and giving guided tours of a system's functionality. This plugin allows developers to create interactive step-by-step guides that highlight specific elements on an image based on their position and include instructions or information for each step. It's particularly useful for improving user engagement and reducing confusion for new users navigating a complex interface. The component is powered by [ShepherdJS](https://github.com/shepherd-pro/shepherd), ensuring a smooth and interactive user experience.
+![gif animation displaying guided tour](https://raw.githubusercontent.com/wiki/LIT-EIA/adapt-esdc-tour/adapt-esdc-tour-animated-demo.gif)
+
+The Adapt Tour Component is a versatile solution for guiding users through a series of steps or features on a form, system, application, or website. Similar to hotgraphic, it's a useful tool for onboarding new users, providing feature tutorials, and giving guided tours of a system's functionality. This plugin allows developers to create interactive step-by-step guides that highlight specific elements on an image based on their position and include instructions or information for each step. It's particularly useful for improving user engagement and reducing confusion for new users navigating a complex interface. The component is powered by [ShepherdJS](https://github.com/shepherd-pro/shepherd), ensuring a smooth and interactive user experience.
 
 ## Features
 
