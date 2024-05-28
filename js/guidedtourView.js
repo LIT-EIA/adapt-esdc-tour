@@ -86,8 +86,8 @@ define([
         this.model.set('guidedtour', guidedtour);
 
         var componentModel = this.model;
-        var blockModel = componentModel.get('_parent');
-        var articleModel = blockModel.get('_parent');
+        var blockModel = Adapt.findById(componentModel.get("_parentId"));
+        var articleModel = Adapt.findById(blockModel.get("_parentId"));
 
         var models = [componentModel, blockModel, articleModel];
         var titleLevel = 1;
