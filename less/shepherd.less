@@ -1,5 +1,4 @@
 .shepherd-button {
-    background: #3288e6;
     border: 0;
     border-radius: 3px;
     color: hsla(0, 0%, 100%, .75);
@@ -10,7 +9,6 @@
 }
 
 .shepherd-button:not(:disabled):hover {
-    background: #196fcc;
     color: hsla(0, 0%, 100%, .75)
 }
 
@@ -43,25 +41,12 @@
 .shepherd-cancel-icon {
     background: transparent;
     border: none;
-    color: hsla(0, 0%, 50%, .75);
     cursor: pointer;
     font-size: 2em;
     font-weight: 400;
     margin: 0;
     padding: 0;
     transition: color .5s ease
-}
-
-.shepherd-cancel-icon:hover {
-    color: rgba(0, 0, 0, .75)
-}
-
-.shepherd-has-title .shepherd-content .shepherd-cancel-icon {
-    color: hsla(0, 0%, 50%, .75)
-}
-
-.shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover {
-    color: rgba(0, 0, 0, .75)
 }
 
 .shepherd-title {
@@ -85,8 +70,7 @@
 }
 
 .shepherd-has-title .shepherd-content .shepherd-header {
-    background: #e6e6e6;
-    padding: 1em
+    padding: 1em;
 }
 
 .shepherd-text {
@@ -150,7 +134,6 @@
 }
 
 .shepherd-arrow:before {
-    background: #fff;
     content: "";
     transform: rotate(45deg)
 }
@@ -173,10 +156,6 @@
 
 .shepherd-element.shepherd-centered>.shepherd-arrow {
     opacity: 0
-}
-
-.shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before {
-    background-color: #e6e6e6
 }
 
 .shepherd-target-click-disabled.shepherd-enabled.shepherd-target,
@@ -212,20 +191,12 @@
     color: #eaeaea;
 }
 
-.shepherd-header {
-    background: #105067 !important;
-}
-
 .shepherd-text {
     color: #000;
 }
 
 .shepherd-content {
     background: #bfbfbf;
-}
-
-.shepherd-button {
-    background: #105067;
 }
 
 .shepherd-arrow {
