@@ -290,7 +290,7 @@ define([
       var currentStep = tour.getCurrentStep();
       var stepId = currentStep.id;
 
-      _.delay(() => {
+      _.delay(function () {
         var stepElem = $(`.shepherd-element.${stepId}`);
         var img = self.$el.find('.guidedtour-graphic img');
         var navHeight = $('.navigation').height();
@@ -306,11 +306,7 @@ define([
         var imgInView = imgTop > winScrollTop + navHeight && imgBottom < winScrollTop + winHeight;
         var imageBiggerThanView = imgHeight > (viewHeight - navHeight);
         var instructions = self.$el.find('.guidedtour-instruction-inner');
-        var instructionsOffset = instructions.offset();
-        var instructionsTop = instructionsOffset.top - navHeight;
-        var button = self.$el.find('.top-button');
-        var buttonOffset = button.offset();
-        var buttonTop = buttonOffset.top;
+        var instructionsExist = instructions.length > 0;
 
         if (stepElem.length > 0) {
           var stepOffset = stepElem.offset();
@@ -354,13 +350,22 @@ define([
             console.log('middle of image!')
           }
         } else {
-          console.log(imageBiggerThanView);
           if (!imgInView && !imageBiggerThanView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
             console.log('middle of image!')
           } else if (imageBiggerThanView) {
-            window.scrollTo({ top: instructionsTop, behavior: 'smooth' });
-            console.log('instructions!')
+            if (instructionsExist) {
+              var instructionsOffset = instructions.offset();
+              var instructionsTop = instructionsOffset.top - navHeight;
+              window.scrollTo({ top: instructionsTop, behavior: 'smooth' });
+              console.log('instructions!');
+            } else {
+              var button = self.$el.find('.top-button');
+              var buttonOffset = button.offset();
+              var buttonTop = buttonOffset.top - navHeight;
+              window.scrollTo({ top: buttonTop, behavior: 'smooth' });
+              console.log('top of button!');
+            }
           }
         }
       }, 50);
