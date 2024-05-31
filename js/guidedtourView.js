@@ -110,13 +110,9 @@ define([
 
     postRender: function () {
       var self = this;
-      var img = this.$el.find(`.guidedtour-graphic img`);
-      img.on('load', function () {
+      this.$el.find(`.guidedtour-graphic img`).on('load', function () {
         self.setStartButton();
       });
-      if (img.length > 0 && img[0].complete) {
-        this.setStartButton();
-      }
       if (this.model.get('active')) {
         var guidedtour = this.model.get('guidedtour');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -138,7 +134,8 @@ define([
         };
 
         this.previousStep = function (tour, stepIndex) {
-          this.$el.find('.loading-step').focus({ preventScroll: true });
+          var loading = this.$el.find('.loading-step')[0];
+          loading.focus({ preventScroll: true });
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
             tour.back();
@@ -147,7 +144,8 @@ define([
         };
 
         this.nextStep = function (tour, stepIndex) {
-          this.$el.find('.loading-step').focus({ preventScroll: true });
+          var loading = this.$el.find('.loading-step')[0];
+          loading.focus({ preventScroll: true });
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
           this.loadImage(step).then(() => {
@@ -177,9 +175,10 @@ define([
           self.loadImage(self.steps[0]).then(() => {
             self.scrollToPositionBound();
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
-            self.$el.find('.start-tour').removeClass('display-none');
+            self.$el.find('.start-tour.active-button').removeClass('display-none');
+            var button = self.$el.find('.start-tour.active-button')[0];
+            button.focus({preventScroll: true});
             self.verifyCompletion();
-            self.$el.find('.start-tour.active-button').focus({ preventScroll: true });
           })
         });
 
@@ -264,7 +263,6 @@ define([
       var viewHeight = winHeight + navHeight;
       var imgHeight = img.outerHeight(true);
       var imageBiggerThanView = imgHeight > (viewHeight - navHeight);
-      console.log('imageBiggerThanView', imageBiggerThanView);
       if (imageBiggerThanView) {
         this.$el.find('.guidedtour-widget .top-button').toggleClass('active-button', true);
         this.$el.find('.guidedtour-graphic .over-button').toggleClass('active-button', false);
@@ -289,7 +287,6 @@ define([
       var tour = self.tour;
       var currentStep = tour.getCurrentStep();
       var stepId = currentStep.id;
-
       _.delay(function () {
         var stepElem = $(`.shepherd-element.${stepId}`);
         var img = self.$el.find('.guidedtour-graphic img');
@@ -330,47 +327,46 @@ define([
 
           if (stepLowerThanImg && ((viewHigherThanStep || imgHigherThanView) || (imageBiggerThanView && viewHigherThanStep))) {
             window.scrollTo({ top: stepBottom - winHeight, behavior: 'smooth' });
-            console.log('bottom of step!')
+            //console.log('bottom of step!')
           } else if (stepHigherThanImg && ((viewLowerThanStep || imgLowerThanView) || (imageBiggerThanView && viewLowerThanStep))) {
             window.scrollTo({ top: stepTop - navHeight, behavior: 'smooth' });
-            console.log('top of step!')
+            //console.log('top of step!')
           } else if (stepInsideImg && imageBiggerThanView) {
             if (nearBottom) {
-              console.log('bottom of image!');
+              //console.log('bottom of image!');
               window.scrollTo({ top: viewOnImageBottom, behavior: 'smooth' });
             } else if (nearTop) {
-              console.log('top of image!');
+              //console.log('top of image!');
               window.scrollTo({ top: viewOnImageTop, behavior: 'smooth' });
             } else {
-              console.log('center of step!')
+              //console.log('center of step!')
               window.scrollTo({ top: viewOnCenterStep, behavior: 'smooth' });
             }
           } else if (stepInsideImg && imgNotCentered && !imgInView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
-            console.log('middle of image!')
+            //console.log('middle of image!')
           }
         } else {
           if (!imgInView && !imageBiggerThanView) {
             window.scrollTo({ top: centerImg, behavior: 'smooth' });
-            console.log('middle of image!')
+            //console.log('middle of image!')
           } else if (imageBiggerThanView) {
             if (instructionsExist) {
               var instructionsOffset = instructions.offset();
               var instructionsTop = instructionsOffset.top - navHeight;
               window.scrollTo({ top: instructionsTop, behavior: 'smooth' });
-              console.log('instructions!');
+              //console.log('instructions!');
             } else {
               var button = self.$el.find('.top-button');
               var buttonOffset = button.offset();
               var buttonTop = buttonOffset.top - navHeight;
               window.scrollTo({ top: buttonTop, behavior: 'smooth' });
-              console.log('top of button!');
+              //console.log('top of button!');
             }
           }
         }
       }, 50);
     },
-
   });
 
   return GuidedTourView;
