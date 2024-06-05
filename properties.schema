@@ -168,14 +168,32 @@
                 "validators": [],
                 "help": "Alternative text for the image displayed behind the step",
                 "translatable": true
+              },
+              "_forceFullWidth": {
+                "type": "boolean",
+                "required": false,
+                "default": false,
+                "inputType": "Checkbox",
+                "validators": [],
+                "title": "Force full width",
+                "help": "Force full width"
               }
             }
+          },
+          "_pinfinder": {
+            "type": "string",
+            "required": false,
+            "default": "",
+            "inputType": "GuidedTourPinFinder",
+            "validators": [],
+            "help": "Pin finder",
+            "title": "Pin finder",
+            "noTitle": true
           },
           "_pin": {
             "type": "object",
             "required": false,
             "title": "Step Position",
-            "secondaryLabel": "Tip: You can quickly find the pin position with the <a target=\"_blank\" href=\"https://lit-eia.github.io/en/adapt/pin-finder/\">Pin Position Finder Tool</a>",
             "properties": {
               "_left": {
                 "type": "number",

@@ -2,8 +2,18 @@
 
     .guidedtour-graphic {
         position: relative;
-        display: inline-block;
-        width: 100%;
+        max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        &.full-width {
+            width: 100%;
+
+            img {
+                width: 100%;
+            }
+        }
     }
 
     .guidedtour-graphic-pin {
@@ -277,15 +287,24 @@
 
 .tour-disabled {
     opacity: 0.3;
+    filter: blur(4px);
 }
 
-.start-tour {
-    position: absolute;
-    width: 25%;
-    height: 15%;
-    z-index: 1;
-    left: 37.5%;
-    top: 41.5%;
+.guidedtour-inner {
+    .start-tour {
+        width: 100%;
+        display: none;
+
+    }
+    .guidedtour-graphic .start-tour {
+        position: absolute;
+        width: auto;
+        min-width: 25%;
+        z-index: 1;
+    }
+    .active-button {
+        display: inline-block;
+    }
 }
 
 .sr-only {
@@ -304,7 +323,7 @@
 }
 
 .shepherd-arrow:before {
-    transform: rotate(45deg) scale(1.25)!important;
+    transform: rotate(45deg) scale(1.25) !important;
 }
 
 .border {
@@ -333,4 +352,45 @@
 
 .shepherd-text {
     min-height: 70px;
+}
+
+.shepherd-header button:hover {
+    background-color: transparent!important;
+}
+
+.shepherd-arrow {
+    filter: none!important;
+}
+
+.shepherd-arrow:before {
+    background: #bfbfbf;
+}
+
+.shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before {
+    background-color: @primary-color;
+}
+
+.shepherd-content {
+    border-radius: 0!important;
+}
+
+.shepherd-header {
+    background-color: @primary-color;
+    border-radius: 0!important
+}
+
+.shepherd-cancel-icon {
+    color: @white;
+}
+
+.shepherd-button {
+    background: @primary-color;
+}
+
+.shepherd-button:not(:disabled):hover {
+    background: @quaternary-color;
+}
+
+.shepherd-cancel-icon:hover {
+    background: none;
 }
