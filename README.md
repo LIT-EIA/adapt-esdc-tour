@@ -57,6 +57,9 @@ Each entry in the array represents a step in the guided tour and should contain 
 - **title (string)**: Title displayed in the step bubble.
 - **body (string)**: Main text displayed in the step bubble.
 - **_graphic (object)**: Path to the background image displayed behind the step.
+  - src: Source of the image to be displayed
+  - alt: Slternative text for the image displayed behind the step.
+  - _forceFullWidth: Forces image to take full width of component.
 - **_pinfinder (string)**: Only used with special Authoring Tool plugin.
 - **_pin (object)**: Properties for the pin, including position and direction.
   - _left: Left position of the pin.
