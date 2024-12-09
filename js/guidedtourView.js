@@ -127,7 +127,8 @@ define([
               enabled: true
             },
             scrollTo: false
-          }
+          },
+          keyboardNavigation: false
         });
 
 
