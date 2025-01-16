@@ -213,6 +213,30 @@
                 "validators": ["required", "number"],
                 "help": "Top position of pin (the pin is where the bubble will point)"
               },
+              "_width": {
+                "type": "number",
+                "required": true,
+                "default": 0,
+                "title": "Element Width",
+                "inputType": "Number",
+                "validators": [
+                  "required",
+                  "number"
+                ],
+                "help": "Width of element"
+              },
+              "_height": {
+                "type": "number",
+                "required": true,
+                "default": 0,
+                "title": "Element Height",
+                "inputType": "Number",
+                "validators": [
+                  "required",
+                  "number"
+                ],
+                "help": "Height of element"
+              },
               "_bubbledirection": {
                 "type": "string",
                 "required": true,
