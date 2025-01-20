@@ -237,6 +237,18 @@
                 ],
                 "help": "Height of element"
               },
+              "_offsetGapSize": {
+                "type": "string",
+                "required": true,
+                "default": "small",
+                "title": "Offset Gap Size",
+                "inputType": {
+                  "type": "Select",
+                  "options": ["small", "large"]
+                },
+                "validators": [],
+                "help": "Defines the size of the offset gap between the highlighted zone and the bubble"
+              },
               "_bubbledirection": {
                 "type": "string",
                 "required": true,
@@ -257,6 +269,24 @@
                 "inputType": "ColourPicker",
                 "validators": [],
                 "help": "Bubble Border Color"
+              },
+              "_highlight": {
+                "type": "boolean",
+                "required": true,
+                "default": true,
+                "title": "Enable Highlight",
+                "inputType": "Checkbox",
+                "validators": [],
+                "help": "If enabled, the selected zone will will be highlighted for accessibility"
+              },
+              "_highlightBorder": {
+                "type": "boolean",
+                "required": true,
+                "default": false,
+                "title": "Enable Highlight Border",
+                "inputType": "Checkbox",
+                "validators": [],
+                "help": "If enabled, the highlighted zone will have a border"
               }
             }
           }

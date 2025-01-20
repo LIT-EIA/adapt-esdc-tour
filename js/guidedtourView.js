@@ -75,9 +75,11 @@ define([
 
     preRender: function () {
       this.steps = this.model.get('_items');
+      var self = this;
       if (this.steps && this.steps.length >= 2) {
         this.model.set('active', true);
-        this.steps.forEach(function (step) {
+        this.steps.forEach(function (step, index) {
+          self.steps[index].id = `tour-item-${index}`;
           var img = new Image();
           img.src = step._graphic.src;
         });
@@ -112,7 +114,7 @@ define([
       var self = this;
       if (this.model.get('active')) {
         var initialImage = this.$el.find('.guidedtour-graphic img');
-        if(initialImage){
+        if (initialImage) {
           self.setStartButton();
         }
         initialImage.on('load', function () {
@@ -142,7 +144,19 @@ define([
           var loading = this.$el.find('.loading-step')[0];
           loading.focus({ preventScroll: true });
           var step = this.steps[stepIndex];
+          var nextStep = this.steps[stepIndex + 1];
+          var stepElement = this.$el.find(`.${step.id}`);
+          var nextStepElement = this.$el.find(`.${nextStep.id}`);
           this.loadImage(step).then(() => {
+            nextStepElement.removeClass('mask-overlay');
+            nextStepElement.removeClass('visible-border');
+            if (step._pin._highlight) {
+              stepElement.addClass('mask-overlay');
+            }
+            if (step._pin._highlightBorder) {
+              stepElement.css("--shepherd-border-color", step._pin._bordercolor);
+              stepElement.addClass('visible-border');
+            }
             tour.back();
           }
           );
@@ -153,7 +167,20 @@ define([
           loading.focus({ preventScroll: true });
           this.steps[stepIndex].inView = true;
           var step = this.steps[stepIndex];
+          var previousStep = this.steps[stepIndex - 1];
+          var stepElement = this.$el.find(`.${step.id}`);
+          var previousStepElement = this.$el.find(`.${previousStep.id}`);
           this.loadImage(step).then(() => {
+            previousStepElement.removeClass('mask-overlay');
+            previousStepElement.removeClass('visible-border');
+            if (step._pin._highlight) {
+              stepElement.addClass('mask-overlay');
+            }
+            if (step._pin._highlightBorder) {
+              stepElement.css("--shepherd-border-color", step._pin._bordercolor);
+              stepElement.addClass('visible-border');
+            }
+
             tour.next();
           }
           );
@@ -182,9 +209,10 @@ define([
             self.$el.find('.guidedtour-graphic img').addClass('tour-disabled');
             self.$el.find('.start-tour.active-button').removeClass('display-none');
             var button = self.$el.find('.start-tour.active-button')[0];
-            button.focus({preventScroll: true});
+            button.focus({ preventScroll: true });
             self.verifyCompletion();
-          })
+          });
+          self.$el.find('.mask-overlay, .visible-border').removeClass('mask-overlay visible-border');
         });
 
         this.tour.on('start', function (e) {
@@ -239,9 +267,13 @@ define([
               show: function () {
                 var dialog = $(this.el);
                 dialog.addClass(`step-${index}-${self.componentID}`);
-                // look into localizing this more
-                $(":root")[0].style.setProperty("--shepherd-border-color", this.options.borderColor);
-                self.scrollToPositionBound()
+                dialog.css("--shepherd-border-color", this.options.borderColor);
+                if(step._pin._offsetGapSize === 'small'){
+                  dialog.toggleClass('small-gap', true);
+                } else {
+                  dialog.toggleClass('small-gap', false);
+                }
+                self.scrollToPositionBound();
               }
             }
           }
@@ -280,10 +312,20 @@ define([
 
     onStartTour: function () {
       this.steps[0].inView = true;
+      var step = this.steps[0];
+      var stepID = step.id;
+      var stepElement = this.$el.find(`.${stepID}`);
       var self = this;
       _.delay(function () {
         self.$el.find('.start-tour').addClass('display-none');
         self.$el.find('.guidedtour-graphic img').removeClass('tour-disabled');
+        if (step._pin._highlight) {
+          stepElement.addClass('mask-overlay');
+        }
+        if (step._pin._highlightBorder) {
+          stepElement.css("--shepherd-border-color", step._pin._bordercolor);
+          stepElement.addClass('visible-border');
+        }
         self.tour.start();
       }, 300)
     },
