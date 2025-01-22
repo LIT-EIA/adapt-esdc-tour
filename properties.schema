@@ -151,6 +151,7 @@
             "type": "object",
             "required": true,
             "title": "Step Graphic",
+            "noListTitle": "true",
             "properties": {
               "src": {
                 "type": "string",
@@ -194,24 +195,25 @@
             "type": "object",
             "required": false,
             "title": "Step Position",
+            "noListTitle": "true",
             "properties": {
               "_left": {
                 "type": "number",
                 "required": true,
                 "default": 0,
-                "title": "Pin Position - Left",
+                "title": "Position - Left",
                 "inputType": "Number",
                 "validators": ["required", "number"],
-                "help": "Left position of pin (the pin is where the bubble will point)"
+                "help": "Left position of the element"
               },
               "_top": {
                 "type": "number",
                 "required": true,
                 "default": 0,
-                "title": "Pin Position - Top",
+                "title": "Position - Top",
                 "inputType": "Number",
                 "validators": ["required", "number"],
-                "help": "Top position of pin (the pin is where the bubble will point)"
+                "help": "Top position of the element"
               },
               "_width": {
                 "type": "number",

@@ -273,6 +273,11 @@ define([
                 } else {
                   dialog.toggleClass('small-gap', false);
                 }
+                if(!step._pin._width && !step._pin._width){
+                  dialog.toggleClass('no-gap', true);
+                } else {
+                  dialog.toggleClass('no-gap', false);
+                }
                 self.scrollToPositionBound();
               }
             }

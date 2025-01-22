@@ -332,6 +332,7 @@
 
 .shepherd-element {
     border-radius: 0 !important;
+    transition: opacity .1s, visibility .1s;
 }
 
 .shepherd-element[data-popper-placement="left"] {
@@ -340,6 +341,10 @@
 
     &.small-gap {
         margin-left: -12.5px;
+    }
+
+    &.no-gap {
+        margin-left: 0;
     }
 
 }
@@ -352,6 +357,10 @@
         margin-left: 12.5px;
     }
 
+    &.no-gap {
+        margin-left: 0;
+    }
+
 }
 
 .shepherd-element[data-popper-placement="top"] {
@@ -362,6 +371,10 @@
         margin-top: -12.5px;
     }
 
+    &.no-gap {
+        margin-top: -12.5px;
+    }
+
 }
 
 .shepherd-element[data-popper-placement="bottom"] {
@@ -369,6 +382,10 @@
     margin-top: 25px;
 
     &.small-gap {
+        margin-top: 12.5px;
+    }
+
+    &.no-gap {
         margin-top: 12.5px;
     }
 }

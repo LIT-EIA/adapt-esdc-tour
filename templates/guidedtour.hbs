@@ -12,7 +12,7 @@
         {{/if}}
         {{#each _items}}
           <div class="guidedtour-graphic-pin-list-item" role="listitem">
-            <span class="base guidedtour-graphic-pin component-item-text-color tour-item-{{@index}}" data-index="{{@index}}" style="top:{{{_pin._top}}}%; left:{{{_pin._left}}}%; width:{{{_pin._width}}}%; height:{{{_pin._height}}}%"></span>
+            <span class="base guidedtour-graphic-pin component-item-text-color tour-item-{{@index}}" data-index="{{@index}}" style="top:{{{_pin._top}}}%; left:{{{_pin._left}}}%;{{#if _pin._width}} width:{{{_pin._width}}}%;{{/if}}{{#if _pin._height}} height:{{{_pin._height}}}%{{/if}}"></span>
           </div>
         {{/each}}
     </div>
