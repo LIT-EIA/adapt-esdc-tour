@@ -1,11 +1,20 @@
 .guidedtour-component {
 
+    .mask-overlay{
+        box-shadow:0 0 0 9999px rgba(0,0,0,.6);
+    }
+
+    .visible-border {
+        outline: 4px solid var(--shepherd-border-color);
+    }
+
     .guidedtour-graphic {
         position: relative;
         max-width: 100%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
 
         &.full-width {
             width: 100%;
@@ -22,7 +31,7 @@
         top: 0%;
         left: 0%;
         background-color: transparent !important;
-        border-radius: 50%;
+        border-radius: 0px !important;
         text-decoration: none;
         height: 10px;
         width: 10px;
@@ -320,6 +329,22 @@
 
 .shepherd-element {
     border-radius: 0 !important;
+}
+
+.shepherd-element[data-popper-placement="left"]{
+    margin-left: -12.5px;
+}
+
+.shepherd-element[data-popper-placement="right"]{
+    margin-left: 12.5px;
+}
+
+.shepherd-element[data-popper-placement="top"]{
+    margin-top: -12.5px;
+}
+
+.shepherd-element[data-popper-placement="bottom"]{
+    margin-top: 12.5px;
 }
 
 .shepherd-arrow:before {
