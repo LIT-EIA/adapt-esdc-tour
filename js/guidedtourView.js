@@ -77,7 +77,9 @@ define([
       this.steps = this.model.get('_items');
       if (this.steps && this.steps.length >= 2) {
         this.model.set('active', true);
-        this.steps.forEach(function (step) {
+        var offsetValue = Adapt.config.get("_scrollingContainer")._isEnabled ? 64 : 0;
+        this.model.set('offsetValue', offsetValue);
+        this.steps.forEach(function (step, index) {
           var img = new Image();
           img.src = step._graphic.src;
         });
@@ -329,43 +331,70 @@ define([
           var nearTop = (centerStep - imgTop) < (viewHeight / 2) + navHeight;
           var viewOnImageBottom = imgBottom - (viewHeight - navHeight);
           var viewOnImageTop = imgTop - navHeight;
-
+          var offsetValue = self.model.get('offsetValue');
           if (stepLowerThanImg && ((viewHigherThanStep || imgHigherThanView) || (imageBiggerThanView && viewHigherThanStep))) {
-            window.scrollTo({ top: stepBottom - winHeight, behavior: 'smooth' });
+            var target = (stepBottom - winHeight);
+            var distance = Math.abs(target - winScrollTop);
+            var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+            Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             //console.log('bottom of step!')
           } else if (stepHigherThanImg && ((viewLowerThanStep || imgLowerThanView) || (imageBiggerThanView && viewLowerThanStep))) {
-            window.scrollTo({ top: stepTop - navHeight, behavior: 'smooth' });
+            var target = (stepTop - navHeight);
+            var distance = Math.abs(target - winScrollTop);
+            var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+            Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             //console.log('top of step!')
           } else if (stepInsideImg && imageBiggerThanView) {
             if (nearBottom) {
               //console.log('bottom of image!');
-              window.scrollTo({ top: viewOnImageBottom, behavior: 'smooth' });
+              var target = viewOnImageBottom;
+              var distance = Math.abs(target - winScrollTop);
+              var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+              Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             } else if (nearTop) {
               //console.log('top of image!');
-              window.scrollTo({ top: viewOnImageTop, behavior: 'smooth' });
+              var target = viewOnImageTop;
+              var distance = Math.abs(target - winScrollTop);
+              var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+              Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             } else {
-              //console.log('center of step!')
-              window.scrollTo({ top: viewOnCenterStep, behavior: 'smooth' });
+              //console.log('center of step!');
+              var target = viewOnCenterStep;
+              var distance = Math.abs(target - winScrollTop);
+              var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+              Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             }
           } else if (stepInsideImg && imgNotCentered && !imgInView) {
-            window.scrollTo({ top: centerImg, behavior: 'smooth' });
+            var target = centerImg;
+            var distance = Math.abs(target - winScrollTop);
+            var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+            Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             //console.log('middle of image!')
           }
         } else {
           if (!imgInView && !imageBiggerThanView) {
-            window.scrollTo({ top: centerImg, behavior: 'smooth' });
+            var target = centerImg;
+            var distance = Math.abs(target - winScrollTop);
+            var duration = Math.min(distance, 1000);
+            Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
             //console.log('middle of image!')
           } else if (imageBiggerThanView) {
             if (instructionsExist) {
               var instructionsOffset = instructions.offset();
               var instructionsTop = instructionsOffset.top - navHeight;
-              window.scrollTo({ top: instructionsTop, behavior: 'smooth' });
+              var target = instructionsTop;
+              var distance = Math.abs(target - winScrollTop);
+              var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+              Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
               //console.log('instructions!');
             } else {
               var button = self.$el.find('.top-button');
               var buttonOffset = button.offset();
               var buttonTop = buttonOffset.top - navHeight;
-              window.scrollTo({ top: buttonTop, behavior: 'smooth' });
+              var target = buttonTop;
+              var distance = Math.abs(target - winScrollTop);
+              var duration = Math.max(Math.min(distance / 1.5, 1000), 350);
+              Adapt.scrollTo(`${target + offsetValue }`, { offset: { top:  0 }, duration: duration });
               //console.log('top of button!');
             }
           }
