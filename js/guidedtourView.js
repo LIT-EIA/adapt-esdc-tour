@@ -241,7 +241,7 @@ define([
               show: function () {
                 var dialog = $(this.el);
                 dialog.addClass(`step-${index}-${self.componentID}`);
-                dialog.css(`--shepherd-border-color`, this.options.borderColor);
+                $(":root")[0].style.setProperty("--shepherd-border-color", this.options.borderColor);
                 self.scrollToPositionBound()
               }
             }
